@@ -1,12 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import ProductContainer from './components/ProductContainer';
+import ShoppingCart from './components/ShoppingCart';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
+import './App.css';
 
 
 const App = () => {
   // static state using react hooks already here
   const [data, setData] = useState({});
+  const [cartItems, setCartItems] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+
   const products = Object.values(data);
   useEffect(() => {
     const fetchProducts = async () => {
@@ -17,10 +22,20 @@ const App = () => {
     fetchProducts();
   }, []);
 
+  const addToCart = (product) => {
+    console.log("adding to cart!" + product.title)
+    var newCart = cartItems.concat([product]);
+    setCartItems(newCart);
+    setIsOpen(true);
+  }
+
+  const deleteFromCart = (product) => {
+
+  }
+
   const items = products.map(p => <ProductContainer
-                                      pImg={p.sku}
-                                      pTitle={p.title}
-                                      pPrice={p.price}
+                                      product={p}
+                                      addToCart={addToCart}
                                   />);
 
   const useStyles = makeStyles(theme => ({
@@ -40,6 +55,9 @@ const App = () => {
       control: {
         padding: theme.spacing(2),
       },
+      button: {
+        margin: theme.spacing(1),
+      },
   }));
 
   const classes = useStyles();
@@ -47,6 +65,9 @@ const App = () => {
   return (
     <div>
       <h1>Sick Tees Co.</h1>
+      
+      <ShoppingCart cartItems={cartItems} isOpen={isOpen} setIsOpen={setIsOpen}></ShoppingCart>
+
       <Grid container direction="row" justify="center" alignItems="center" className={classes.root} spacing={2}>
         {items.map(pContainer => 
         <Grid item xs={4}>
