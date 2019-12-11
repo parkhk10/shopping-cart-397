@@ -30,7 +30,9 @@ const App = () => {
   }
 
   const deleteFromCart = (product) => {
-
+    console.log("deleting")
+    var newCart = cartItems.filter(p => p != product);
+    setCartItems(newCart);
   }
 
   const items = products.map(p => <ProductContainer
@@ -66,7 +68,7 @@ const App = () => {
     <div>
       <h1>Sick Tees Co.</h1>
       
-      <ShoppingCart cartItems={cartItems} isOpen={isOpen} setIsOpen={setIsOpen}></ShoppingCart>
+      <ShoppingCart cartItems={cartItems} isOpen={isOpen} setIsOpen={setIsOpen} deleteFromCart={deleteFromCart}></ShoppingCart>
 
       <Grid container direction="row" justify="center" alignItems="center" className={classes.root} spacing={2}>
         {items.map(pContainer => 

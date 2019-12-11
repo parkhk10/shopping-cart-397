@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core';
-import InboxIcon from '@material-ui/icons/Inbox';
+import { List, ListItem, ListItemIcon, ListItemText, Divider, Fab } from '@material-ui/core';
+import RemoveIcon from '@material-ui/icons/Remove';
 import DraftsIcon from '@material-ui/icons/Drafts';
 
 const useStyles = makeStyles(theme => ({
@@ -11,15 +11,20 @@ const useStyles = makeStyles(theme => ({
       left: '92%',
       top: 0
     },
+    margin: {
+        margin: theme.spacing(1),
+    },
 }));
 
-const ShoppingCartItem = ({item}) => {
+const ShoppingCartItem = ({item, deleteFromCart}) => {
     const classes = useStyles();
 
     return (
-        <ListItem >
+        <ListItem>
         <ListItemIcon>
-            <InboxIcon />
+            <Fab size="small" color="primary" aria-label="remove" className={classes.margin} onClick={() => deleteFromCart(item)}>
+            <RemoveIcon />
+            </Fab>
         </ListItemIcon>
         <ListItemText primary={item.title} secondary={"$" + item.price} />
         </ListItem>

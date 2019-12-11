@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Drawer, List } from '@material-ui/core';
+import { Button, Drawer, List, ListItem } from '@material-ui/core';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import ShoppingCartItem from './ShoppingCartItem';
 
-const ShoppingCart = ({cartItems, isOpen, setIsOpen}) => {
+const ShoppingCart = ({cartItems, isOpen, setIsOpen, deleteFromCart}) => {
     const useStyles = makeStyles(theme => ({
         root: {
             width: '100%',
@@ -17,6 +17,9 @@ const ShoppingCart = ({cartItems, isOpen, setIsOpen}) => {
           left: '92%',
           top: 0
         },
+        listEmpty: {
+            width: '300px',
+        }
     }));
 
     const classes = useStyles();
@@ -46,9 +49,10 @@ const ShoppingCart = ({cartItems, isOpen, setIsOpen}) => {
             </Button>
 
             <Drawer anchor="right" open={isOpen} onClose={toggleDrawer(false)}>
+                <ListItem className={classes.listEmpty}></ListItem>
                 <React.Fragment className={classes.root}>
                     <List component="nav" aria-label="main mailbox folders">
-                        {cartItems.map(item => <ShoppingCartItem item={item}></ShoppingCartItem>)}
+                        {cartItems.map(item => <ShoppingCartItem item={item} deleteFromCart={deleteFromCart}></ShoppingCartItem>)}
                     </List>
                 </React.Fragment>
             </Drawer>
