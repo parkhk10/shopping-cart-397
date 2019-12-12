@@ -4,7 +4,21 @@ import ShoppingCart from './components/ShoppingCart';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Button } from '@material-ui/core';
 import './App.css';
+import firebase from 'firebase/app';
+import 'firebase/database';
 
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBpHp-AKZswDaKCoKAN2KY1LCVC7Nnj97g",
+  authDomain: "shopping-cart-397.firebaseapp.com",
+  databaseURL: "https://shopping-cart-397.firebaseio.com",
+  projectId: "shopping-cart-397",
+  storageBucket: "shopping-cart-397.appspot.com",
+  messagingSenderId: "737583244838",
+  appId: "1:737583244838:web:b2aa56a239e8d62fa328e7"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database().ref();
 
 const App = () => {
   // static state using react hooks already here
@@ -12,15 +26,25 @@ const App = () => {
   const [cartItems, setCartItems] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  const products = Object.values(data);
   useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await fetch('./data/products.json');
-      const json = await response.json();
-      setData(json);
+    const handleData = snap => {
+      if (snap.val()) setData(snap.val())
+    }
+    db.on('value', handleData, error => alert(error));
+    return () => {
+      db.off('value', handleData);
     };
-    fetchProducts();
-  }, []);
+  }, [])
+
+  const products = Object.values(data);
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     const response = await fetch('./data/products.json');
+  //     const json = await response.json();
+  //     setData(json);
+  //   };
+  //   fetchProducts();
+  // }, []);
 
   const addToCart = (product) => {
     console.log("adding to cart!" + product.title)
